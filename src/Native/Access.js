@@ -9,9 +9,14 @@ Elm.Native.Access.make = function (elm) {
     return elm.Native.Access.values;
   }
 
-  function makeRecordSetter(name) {
-    return F2(function ($new, record) {
-      return _Utils.replace( [[name, $new]], record);
+  function makeRecordSetter (getter) {
+    var pattern = /return _.([^;]+);/;
+    var source = getter.toSource();
+    var match = pattern.exec(source);
+    var fieldName = match[1];
+
+    return F2(function (newVal, record) {
+      return _Utils.replace( [[fieldName, newVal]], record);
     });
   };
 

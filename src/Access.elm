@@ -2,7 +2,7 @@ module Access where
 
 import Native.Access
 
-setter : String -> (rec -> b) -> b -> rec -> rec
-setter name getter =
-  Native.Access.makeRecordSetter name
+setter : (rec -> b) -> b -> rec -> rec
+setter getter =
+  Native.Access.makeRecordSetter getter
 
