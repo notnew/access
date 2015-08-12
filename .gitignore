@@ -1,0 +1,7 @@
+*~
+elm-stuff/packages/
+elm-stuff/build-artifacts/
+elm-stuff/exact-dependencies.json
+test/elm-stuff/packages
+test/elm-stuff/build-artifacts/
+test/elm.js
