@@ -21,3 +21,11 @@ unsafeUpdater getter update rec =
       new = update old
       set = unsafeSetter getter
   in set new rec
+
+focus : (rec -> b) -> { get : rec -> b
+                      , update : (b -> b) -> rec -> rec
+                      }
+focus getter =
+  { get = getter
+  , update = updater getter
+  }
