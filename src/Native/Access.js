@@ -12,7 +12,7 @@ Elm.Native.Access.make = function (elm) {
 
   function makeRecordSetter (getter) {
     var pattern = /return _.([^;]+);/;
-    var source = getter.toSource();
+    var source = getter.toString();
     var match = pattern.exec(source);
     if (match === null || match.length < 2) {
       var msg =
