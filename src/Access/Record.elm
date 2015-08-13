@@ -1,4 +1,18 @@
-module Access.Record where
+module Access.Record (setter, updater, focus, unsafeSetter, unsafeUpdater) where
+
+{-| Setter and updater functions that work on records. Elm provides builtin "dot accessor" function like `.x` or `.velocity` that make it easy to extract a field from a record.  This module provides functions to make setter and updater functions when passed a builtin dot accessor function. So setting and updating record fields is as easy as getting fields.
+
+    setter .x 42 { x=0, y=10 } == { x=42, y=10 }
+
+    incX : { a | x : Float } -> { a | x : Float }
+    incX = updater .x ((+) 1)
+
+    player = { velocity = {x=5, y=10}, health=100 }
+    updater .velocity incX player == { velocity = {x=6, y=10}, health=100 }
+
+@docs setter, unsafeSetter, updater, unsafeUpdater, focus
+
+-}
 
 import Native.Access
 import Debug

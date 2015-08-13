@@ -80,12 +80,30 @@ focus =
 examples : Test
 examples =
   suite "examples from documentation"
-        [ setterExample
+        [ moduleExamples
+        , setterExample
         , unsafeSetterExample
         , updaterExample
         , unsafeUpdaterExample
         , focusExamples
         ]
+
+moduleExamples : Test
+moduleExamples =
+  let setter = Access.Record.setter
+      updater = Access.Record.updater
+      incX : { a | x : Float } -> { a | x : Float }
+      incX = updater .x ((+) 1)
+      player = { velocity = {x=5, y=10}, health=100 }
+  in suite "module examples"
+       [ test "setter example"
+                <| assert
+                     <| setter .x 42 { x=0, y=10 } == { x=42, y=10 }
+       , test "updater example"
+                <| assert
+                   <| updater .velocity incX player
+                        == { velocity = {x=6, y=10}, health=100 }
+       ]
 
 setterExample : Test
 setterExample =
