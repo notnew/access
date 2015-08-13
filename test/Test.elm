@@ -83,6 +83,7 @@ examples =
         [ setterExample
         , unsafeSetterExample
         , updaterExample
+        , unsafeUpdaterExample
         ]
 
 setterExample : Test
@@ -108,6 +109,15 @@ updaterExample =
   let updateX : (value -> value) ->  { a | x : value } -> { a | x : value }
       updateX = updater .x
       updater = Access.Record.updater
-  in test "setter example"
+  in test "updater example"
        <| assert
           <| updateX ((*) 100) { x=9, y=10 } == { x=900, y=10 }
+
+unsafeUpdaterExample : Test
+unsafeUpdaterExample =
+  let polyUpdateX : (old -> new) ->  { a | x : old } -> { a | x : new }
+      polyUpdateX = unsafeUpdater .x
+      unsafeUpdater = Access.Record.unsafeUpdater
+  in test "unsafeUpdater example"
+       <| assert
+            <| polyUpdateX toString { x=9, y=10 } == { x="9", y=10 }

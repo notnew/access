@@ -43,6 +43,16 @@ updater : (rec -> b) -> (b -> b) -> rec -> rec
 updater =
   unsafeUpdater
 
+{-| Make a polymorphic updater function for a record from a record getter.
+
+    polyUpdateX : (old -> new) ->  { a | x : old } -> { a | x : new }
+    polyUpdateX = unsafeUpdater .x
+    polyUpdateX toString { x=9, y=10 } == { x="9", y=10 }
+
+Here "polymorphic" and "unsafe" have the same meaning as for `unsafeSetter` above. It is important to always explicitly annotate the type of variables and functions that depend on calls to `unsafeUpdater` for the reasons given above.
+
+The getter function must be a builtin Elm "dot accessor function" like `.x` or `.velocity` or a runtime error will result.
+-}
 unsafeUpdater : (oldRec -> b) -> (b -> new) -> oldRec -> newRec
 unsafeUpdater getter update rec =
   let old = getter rec
