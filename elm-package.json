@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "a library to help create accessor functions",
-    "repository": "",
+    "repository": "https://github.com/notnew/access.git",
     "license": "BSD3",
     "source-directories": [
         "src"
