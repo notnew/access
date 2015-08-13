@@ -15,6 +15,7 @@ all =
         [ setters
         , updaters
         , focus
+        , examples
         ]
 
 setters : Test
@@ -75,3 +76,17 @@ focus =
                  (set (y => x => x) "ok" record)
        ]
 
+-- test documented examples
+examples : Test
+examples =
+  suite "examples from documentation"
+        [ setterExample
+        ]
+
+setterExample : Test
+setterExample =
+  let setX : value ->  { a | x : value } -> { a | x : value }
+      setX = setter .x
+      setter = Access.Record.setter
+  in test "setter example"
+       <| assert (setX 42 { x=9, y=10 } == { x=42, y=10 })
