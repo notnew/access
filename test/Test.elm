@@ -82,6 +82,7 @@ examples =
   suite "examples from documentation"
         [ setterExample
         , unsafeSetterExample
+        , updaterExample
         ]
 
 setterExample : Test
@@ -101,3 +102,12 @@ unsafeSetterExample =
   in test "unsafeSetter example"
        <| assert
           <| polySetX "hello" { x=9, y=10 } == { x="hello", y=10 }
+
+updaterExample : Test
+updaterExample =
+  let updateX : (value -> value) ->  { a | x : value } -> { a | x : value }
+      updateX = updater .x
+      updater = Access.Record.updater
+  in test "setter example"
+       <| assert
+          <| updateX ((*) 100) { x=9, y=10 } == { x=900, y=10 }

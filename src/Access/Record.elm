@@ -27,10 +27,18 @@ This function is "unsafe" because the compiler cannot infer its type completely 
 
 The getter function must be a builtin Elm "dot accessor function" like `.x` or `.velocity` or a runtime error will result.
 -}
-unsafeSetter : (oldRec -> b) -> new -> oldRec -> newRec
+unsafeSetter : (oldRecord -> oldValue) -> newValue -> oldRecord -> newRecord
 unsafeSetter getter =
   Native.Access.makeRecordSetter getter
 
+{-| Make an updater function for a record from a record getter.
+
+    updateX : (value -> value) ->  { a | x : value } -> { a | x : value }
+    updateX = updater .x
+    updateX ((*) 100) { x=9, y=10 } == { x=900, y=10 }
+
+The getter function must be a builtin Elm "dot accessor function" like `.x` or `.velocity` or a runtime error will result.
+-}
 updater : (rec -> b) -> (b -> b) -> rec -> rec
 updater =
   unsafeUpdater
