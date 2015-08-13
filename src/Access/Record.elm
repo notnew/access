@@ -1,6 +1,10 @@
 module Access.Record (setter, updater, focus, unsafeSetter, unsafeUpdater) where
 
-{-| Setter and updater functions that work on records. Elm provides builtin "dot accessor" function like `.x` or `.velocity` that make it easy to extract a field from a record.  This module provides functions to make setter and updater functions when passed a builtin dot accessor function. So setting and updating record fields is as easy as getting fields.
+{-| Setter and updater functions that work on records. Elm provides builtin "dot
+accessor" function like `.x` or `.velocity` that make it easy to extract a field
+from a record.  This module provides functions to make setter and updater
+functions when passed a builtin dot accessor function. So setting and updating
+record fields is as easy as getting fields.
 
     setter .x 42 { x=0, y=10 } == { x=42, y=10 }
 
@@ -23,7 +27,8 @@ import Debug
     setX = setter .x
     setX 42 { x=9, y=10 } == { x=42, y=10 }
 
-The getter function must be a builtin Elm "dot accessor function" like `.x` or `.velocity` or a runtime error will result.
+The getter function must be a builtin Elm "dot accessor function" like `.x` or
+`.velocity` or a runtime error will result.
 -}
 setter : (record -> value) -> value -> record -> record
 setter getter =
@@ -35,11 +40,19 @@ setter getter =
     polySetX = unsafeSetter .x
     polySetX "hello" { x=9, y=10 } == { x="hello", y=10 }
 
-Here "polymorphic" means that the new value that the updated field gets does not have to match the old value.  Notice that the `x` field in the above example changed types from a `number` to a `String`.
+Here "polymorphic" means that the new value that the updated field gets does not
+have to match the old value.  Notice that the `x` field in the above example
+changed types from a `number` to a `String`.
 
-This function is "unsafe" because the compiler cannot infer its type completely accurately, which could lead to runtime errors or strange error messages when combined with incorrect code.  These problems can be lessened if the result of calling `unsafeSetter` is given an explicit type (like `polySetX` above).  So it is important to always explicitly annotate the type of variables and functions that depend on calls to `unsafeSetter`.
+This function is "unsafe" because the compiler cannot infer its type completely
+accurately, which could lead to runtime errors or strange error messages when
+combined with incorrect code.  These problems can be lessened if the result of
+calling `unsafeSetter` is given an explicit type (like `polySetX` above).  So it
+is important to always explicitly annotate the type of variables and functions
+that depend on calls to `unsafeSetter`.
 
-The getter function must be a builtin Elm "dot accessor function" like `.x` or `.velocity` or a runtime error will result.
+The getter function must be a builtin Elm "dot accessor function" like `.x` or
+`.velocity` or a runtime error will result.
 -}
 unsafeSetter : (oldRecord -> oldValue) -> newValue -> oldRecord -> newRecord
 unsafeSetter getter =
@@ -51,7 +64,8 @@ unsafeSetter getter =
     updateX = updater .x
     updateX ((*) 100) { x=9, y=10 } == { x=900, y=10 }
 
-The getter function must be a builtin Elm "dot accessor function" like `.x` or `.velocity` or a runtime error will result.
+The getter function must be a builtin Elm "dot accessor function" like `.x` or
+`.velocity` or a runtime error will result.
 -}
 updater : (rec -> b) -> (b -> b) -> rec -> rec
 updater =
@@ -63,9 +77,12 @@ updater =
     polyUpdateX = unsafeUpdater .x
     polyUpdateX toString { x=9, y=10 } == { x="9", y=10 }
 
-Here "polymorphic" and "unsafe" have the same meaning as for `unsafeSetter` above. It is important to always explicitly annotate the type of variables and functions that depend on calls to `unsafeUpdater` for the reasons given above.
+Here "polymorphic" and "unsafe" have the same meaning as for `unsafeSetter`
+above. It is important to always explicitly annotate the type of variables and
+functions that depend on calls to `unsafeUpdater` for the reasons given above.
 
-The getter function must be a builtin Elm "dot accessor function" like `.x` or `.velocity` or a runtime error will result.
+The getter function must be a builtin Elm "dot accessor function" like `.x` or
+`.velocity` or a runtime error will result.
 -}
 unsafeUpdater : (oldRec -> b) -> (b -> new) -> oldRec -> newRec
 unsafeUpdater getter update rec =
@@ -82,11 +99,15 @@ unsafeUpdater getter update rec =
              }
     focusX = focus .x
 
-As can be seen from the return type, a `Focus` is a getter and a setter stored together in a record. This type is intended to be used with the [focus package][http://package.elm-lang.org/packages/evancz/focus/1.0.1]. Install the package with
+As can be seen from the return type, a `Focus` is a getter and a setter stored
+together in a record. This type is intended to be used with the [focus
+package][http://package.elm-lang.org/packages/evancz/focus/1.0.1]. Install the
+package with
 
     elm-package install evancz/focus
 
-and you can use the functions provided by the focus package on the result of a `focus` call
+then you can use the functions provided by the focus package on the result of a
+`focus` call
 
     focusX = focus .x
 
