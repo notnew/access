@@ -60,6 +60,26 @@ unsafeUpdater getter update rec =
       set = unsafeSetter getter
   in set new rec
 
+
+{-| Make a `Focus` for a record from a record getter.
+
+    focusX : { get : { a | x : value } -> value
+             , update : (value -> value) -> { a | x : value } -> { a | x : value }
+             }
+    focusX = focus .x
+
+As can be seen from the return type, a `Focus` is a getter and a setter stored together in a record. This type is intended to be used with the [focus package][http://package.elm-lang.org/packages/evancz/focus/1.0.1]. Install the package with
+
+    elm-package install evancz/focus
+
+and you can use the functions provided by the focus package on the result of a `focus` call
+
+    focusX = focus .x
+
+    Focus.get focusX { x=9, y=10 } == 9
+    Focus.set focusX 42 { x=9, y=10 } == { x=42, y=10 }
+    Focus.update focusX ((*) 100) { x=9, y=10 } == { x=900, y=10 }
+-}
 focus : (rec -> b) -> { get : rec -> b
                       , update : (b -> b) -> rec -> rec
                       }

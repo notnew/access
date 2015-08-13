@@ -84,6 +84,7 @@ examples =
         , unsafeSetterExample
         , updaterExample
         , unsafeUpdaterExample
+        , focusExamples
         ]
 
 setterExample : Test
@@ -121,3 +122,23 @@ unsafeUpdaterExample =
   in test "unsafeUpdater example"
        <| assert
             <| polyUpdateX toString { x=9, y=10 } == { x="9", y=10 }
+
+focusExamples : Test
+focusExamples =
+  let focusX : { get : { a | x : value } -> value
+               , update : (value -> value) ->
+                          { a | x : value } -> { a | x : value }
+               }
+      focusX = focus .x
+      focus = Access.Record.focus
+  in suite "focus example"
+       [ test "focus get"
+                <| assert
+                   <| Focus.get focusX { x=9, y=10 } == 9
+       , test "focus set"
+              <| assert
+                   <| Focus.set focusX 42 { x=9, y=10 } == { x=42, y=10 }
+       , test "focus update"
+           <| assert
+              <| Focus.update focusX ((*) 100) { x=9, y=10 } == { x=900, y=10 }
+       ]
